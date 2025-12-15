@@ -42,7 +42,7 @@ const recommendations: Record<string, { title: string; note: string }[]> = {
     { title: "Inception", note: "macera + zihin oyunu" },
     { title: "The Martian", note: "bilim-kurgu / hayatta kalma" },
   ],
-  Eğlenceli: [
+  "Eğlenceli": [
     { title: "The Grand Budapest Hotel", note: "absürt/estetik komedi" },
     { title: "Inside Out", note: "animasyon + duygusal mizah" },
     { title: "Jojo Rabbit", note: "kara mizah" },
@@ -395,31 +395,6 @@ export default function DemoForm() {
             </div>
           )}
 
-         
-            
-          
-
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-zinc-300">
-              <span className="rounded-full border border-zinc-700 bg-zinc-900/30 px-3 py-1">
-                Toplam test: <b>{stats.total}</b>
-              </span>
-              <span className="rounded-full border border-zinc-700 bg-zinc-900/30 px-3 py-1">
-                Doğru: <b>{stats.correct}</b>
-              </span>
-              <span className="rounded-full border border-violet-700/40 bg-violet-900/20 px-3 py-1 text-violet-200">
-                Başarı: <b>{accuracyLocal === null ? "—" : `%${accuracyLocal}`}</b>
-              </span>
-
-              <button
-                onClick={() => {
-                  setStats({ total: 0, correct: 0 });
-                  localStorage.removeItem("demo_stats");
-                }}
-                className="ml-auto rounded-full border border-zinc-700 px-3 py-1 text-zinc-300 hover:bg-zinc-900/40"
-              >
-                Sıfırla
-              </button>
-            </div>
           </div>
         
       )}

@@ -7,99 +7,85 @@ type Step = {
 };
 
 const steps44: Step[] = [
- {
-  img: "/progress/1.png",
-  title: "İlk doğruluk tablosu (karmaşık sınıflar)",
-  takeaways: [
-    "Doğruluklar düşük ve birbirine yakın: bu, modelden çok veri yapısının sınırlayıcı olduğunu gösterir.",
-    "Random Forest’ın en düşük görünmesi, küçük veri + dengesiz sınıflarda güçlü modellerin bile kararsız sonuçlar üretebileceğinin işaretidir.",
-    "Bu tabloda ‘hangi model daha iyi?’ sorusundan ziyade ‘veri/etiket yapısı problemli mi?’ sorusu öne çıkmaktadır.",
-    "Bazı film türlerinin test setinde yalnızca 1 örnekle temsil edilmesi, bu sınıfların model tarafından öğrenilememesine yol açmış; buna bağlı olarak precision ve recall değerleri 0 olarak hesaplanmıştır. Bu durum, küçük ve dengesiz veri setlerinde yaygın görülen yapısal bir problemdir.",
-  ],
-},
-
-{
-  img: "/progress/2.png",
-  title: "Stratejik karar: 8 sınıftan 4 ana kategoriye geçiş",
-  takeaways: [
-    "Bu aşamada problemin modelden değil, ‘çok sınıf + az örnek’ kombinasyonundan kaynaklandığı netleşmiştir.",
-    "Mantıksal olarak ilişkili film türleri birleştirilerek sınıflar daha dengeli ve öğrenilebilir hale getirilmiştir.",
-    "Az örnekli sınıfların (ör. korku, dram) model performansını bozucu etkisi bu adımla azaltılmıştır.",
-    "Bu karar, performans artışının temel nedenidir: elde edilen kazanım ‘daha karmaşık algoritma’ değil, ‘daha doğru problem tanımı’ sayesinde gerçekleşmiştir.",
-  ],
-},
-
   {
-  img: "/progress/6.png",
-  title: "İyileştirme özeti: %44 → %71 → %75",
-  takeaways: [
-    "%44’ten %71’e sıçrama: en büyük kazanım sınıf sadeleştirmeden geldi (veri problemini çözdük).",
-    "%71’den %75’e artış: optimizasyon/tuning gibi ince ayarlar devreye girdi (modeli parlatma).",
-    "Random Forest’ta %75’e çıkaran en iyi ağaç/hiperparametre kombinasyonu: n_estimators=300 (ağaç sayısı), max_depth=None (sınırsız derinlik), min_samples_split=2, min_samples_leaf=2 (yaprak başına en az 2 örnek).",
-
-  ],
-},
-
+    img: "/progress/1.png",
+    title: "İlk doğruluk tablosu (karmaşık sınıflar)",
+    takeaways: [
+      "Doğruluklar düşük ve birbirine yakın: bu, modelden çok veri yapısının sınırlayıcı olduğunu gösterir.",
+      "Random Forest’ın düşük görünmesi, küçük veri + dengesiz sınıflarda güçlü modellerin bile kararsız sonuçlar üretebileceğinin işaretidir.",
+      "Bazı film türlerinin test setinde yalnızca 1 örnekle temsil edilmesi, bu sınıfların model tarafından öğrenilememesine yol açmış; buna bağlı olarak precision/recall değerleri 0 olarak hesaplanmıştır. Bu durum küçük ve dengesiz veri setlerinde yaygın görülen yapısal bir problemdir.",
+    ],
+  },
+  {
+    img: "/progress/2.png",
+    title: "Stratejik karar: 8 sınıftan 4 ana kategoriye geçiş",
+    takeaways: [
+      "Bu aşamada problemin modelden değil, ‘çok sınıf + az örnek’ kombinasyonundan kaynaklandığı netleşmiştir.",
+      "Mantıksal olarak ilişkili film türleri birleştirilerek sınıflar daha dengeli ve öğrenilebilir hale getirilmiştir.",
+      "Az örnekli sınıfların (ör. korku/dram gibi) model performansını bozucu etkisi bu adımla azaltılmıştır.",
+    ],
+  },
+  {
+    img: "/progress/6.png",
+    title: "İyileştirme özeti: %44 → %71 → %75",
+    takeaways: [
+      "%44’ten %71’e sıçrama: en büyük kazanım sınıf sadeleştirmeden geldi (veri problemini çözdük).",
+      "%71’den %75’e artış: optimizasyon/tuning gibi ince ayarlar devreye girdi (modeli parlatma).",
+      "Not: Bu bölüm 44 veriyle yapılan erken denemelerin özetidir; nihai metrikler 263 veriyle ‘Sonuçlar’ bölümünde raporlanmıştır.",
+    ],
+  },
 ];
 
 const steps263: Step[] = [
- {
-  img: "/progress263/1-263.png",
-  title: "İlk deneme sonuçları (iyileştirme öncesi)",
-  takeaways: [
-    "Bu sonuçlar, herhangi bir hiperparametre ayarı veya iyileştirme (sınıf sadeleştirme, tuning vb.) yapılmadan elde edilen baseline çıktılardır.",
-    "Random Forest en iyi görünen model olsa da Macro-F1 ≈ 0.16 seviyesinde kaldı; bu durum bazı sınıfların neredeyse hiç öğrenilemediğini gösterir.",
-    "Classification report’ta bazı sınıflarda precision/recall değerlerinin 0.00 olması, bu sınıfların ya çok az örneğe sahip olduğunu ya da model tarafından ayırt edilemediğini ortaya koyar.",
-    "Bu aşama, accuracy’nin tek başına yanıltıcı olabileceğini ve sınıflar arası adil performansı ölçmek için Macro-F1 metriğinin neden kritik olduğunu net biçimde göstermektedir.",
-  ],
-},
-
-{
-  img: "/progress263/5-263.png",
-  title: "Sınıf bazlı rapor: Precision / Recall / F1 ne söylüyor?",
-  takeaways: [
-    "Support değerleri (Duygusal: 19, Eğlenceli: 31, Gerilim: 5, Macera: 38) sınıflar arasında ciddi bir dengesizlik olduğunu gösteriyor; bu yüzden metrikler yorumlanırken örnek sayıları mutlaka dikkate alınmalı.",
-    "Gerilim sınıfında precision 1.00, recall 0.20: model ‘Gerilim’ dediğinde neredeyse her zaman doğru söylüyor; ancak gerilim örneklerinin büyük kısmını yakalayamıyor. Bu durum az örnekli sınıflarda modelin temkinli davranmasının tipik bir sonucu.",
-    "Macera sınıfı yüksek support (38) sayesinde en güçlü performansı gösteriyor; bu da çoğunluk sınıflarının veri dengesizliğinde doğal avantajını açıkça ortaya koyuyor.",
-    "Macro Avg, her sınıfı eşit ağırlıkla değerlendirir; Weighted Avg ise çoğunluk sınıflarını kayırabilir. Bu nedenle bu projede model kalitesini en doğru yansıtan özet metrik Macro-F1’dir.",
-  ],
-},
-
- {
-  img: "/progress263/2-263.png",
-  title: "Veri analizi: sınıf dağılımı (dengesizlik)",
-  takeaways: [
-    "Macera sınıfı 116 örneğe sahipken Gerilim yalnızca 9 örnek içeriyor; bu dağılım, modelin çoğunluk sınıflarına yönelmesini neredeyse kaçınılmaz hale getiriyor.",
-    "Bu tür dengesizliklerde accuracy yanıltıcı olabilir: model azınlık sınıfları tamamen kaçırsa bile toplam doğruluk çok fazla düşmeyebilir.",
-    "Bu nedenle Macro-F1 metriği tercih edildi; her sınıfı eşit ağırlıkla değerlendirerek az temsil edilen sınıfların göz ardı edilmesini doğrudan cezalandırır.",
-  ],
-},
-
   {
-  img: "/progress263/3-263.png",
-  title: "Model karşılaştırması: RF (Macro-F1 tuned) seçimi",
-  takeaways: [
-    "RF (Accuracy tuned) ve RF (Macro-F1 tuned) modellerinin accuracy değeri aynı seviyede (0.68); bu nedenle fark, modelin sınıfları ne kadar dengeli öğrendiğinde ortaya çıkıyor.",
-    "Macro-F1 için ayarlanmış Random Forest modelinde Macro-F1 skorunun 0.58’e yükselmesi, azınlık sınıfların (özellikle Gerilim ve Duygusal) önceki modellere göre daha iyi temsil edildiğini gösteriyor.",
-    "Accuracy sabit kalırken Macro-F1’in artması, modelin yalnızca çoğunluk sınıfları ezberlemediğini; sınıflar arası performans dengesinin iyileştiğini kanıtlıyor.",
-    "Tablodaki ⭐ işareti, bu projede ‘en yüksek doğruluk’ yerine ‘en adil ve güvenilir sınıf performansı’nın bilinçli olarak tercih edildiğini vurguluyor.",
-    "Bu karar, dengesiz veri problemi olan bir senaryoda metrik seçiminin rastgele değil, bilimsel gerekçelere dayandığını açıkça gösteriyor.",
-  ],
-},
-{
-  img: "/progress263/4-263.png",
-  title: "Confusion Matrix (Final RF): hangi sınıflar karışıyor?",
-  takeaways: [
-    "Confusion matrix’te diyagonal hücreler (sol üstten sağ alta) doğru tahminleri gösterir; bu hücrelerin yoğunluğu, modelin genel öğrenme başarısını yansıtır.",
-    "Macera sınıfı diyagonalda en yüksek değere sahiptir (≈35 doğru): veri sayısı fazla olduğu için model bu sınıfı en güçlü ve en güvenilir şekilde öğrenmiştir (yüksek recall).",
-    "Eğlenceli sınıfı görece dengeli bir performans sergiler; hem doğru tahmin sayısı yüksektir hem de model bu sınıfı istikrarlı biçimde ayırt edebilmektedir.",
-    "Duygusal sınıfı en çok Eğlenceli ve Macera ile karışmaktadır; bu durum model hatasından ziyade, bu türlerin içerik olarak birbirine yakın olmasından kaynaklanan mantıklı karışmalardır.",
-    "Gerilim sınıfında doğru tahmin sayısı düşüktür; bunun temel nedeni modelin yetersizliği değil, bu sınıfa ait örnek sayısının çok az olmasıdır (düşük support).",
-    "Genel olarak matris, modelin çoğunluk sınıflarında güçlü, azınlık sınıflarında ise veri kısıtı nedeniyle temkinli davrandığını açık biçimde ortaya koymaktadır.",
-  ],
-},
-
-  
+    img: "/progress263/1-263.png",
+    title: "İlk deneme sonuçları (iyileştirme öncesi)",
+    takeaways: [
+      "Bu sonuçlar, iyileştirme adımlarından önce alınan erken çıktılardır (problem tanımı/etiket yapısı henüz oturmadan).",
+      "Bazı sınıflarda precision/recall değerlerinin 0.00 olması, o sınıfların ya çok az örneğe sahip olduğunu ya da model tarafından ayırt edilemediğini gösterir.",
+      "Bu aşama, accuracy’nin tek başına yanıltıcı olabileceğini ve sınıflar arası adil performans için Macro-F1 metriğinin neden kritik olduğunu net biçimde ortaya koymaktadır.",
+    ],
+  },
+  {
+    img: "/progress263/5-263.png",
+    title: "Sınıf bazlı rapor: Precision / Recall / F1 ne söylüyor? (Final Hold-out)",
+    takeaways: [
+      "Support değerleri (Duygusal: 18, Eğlenceli: 31, Gerilim: 3, Macera: 41) test setinde (n=93) ciddi bir dengesizlik olduğunu gösterir; bu yüzden metrikler yorumlanırken örnek sayıları mutlaka dikkate alınmalıdır.",
+      "Gerilim sınıfında precision 1.00, recall 0.20: model ‘Gerilim’ dediğinde doğru; ancak az örnek nedeniyle genelleme sınırlıdır. Bu durum veri azlığının tipik sonucudur.",
+      "Macera sınıfı (support=38) yüksek recall (1.00) ile en güçlü performansı gösterir; çoğunluk sınıflarının veri dengesizliğinde doğal avantajını açıkça yansıtır.",
+      "Macro Avg her sınıfı eşit ağırlıkla değerlendirir; Weighted Avg ise çoğunluk sınıflarını kayırabilir. Bu nedenle bu projede model kalitesini en doğru özetleyen metrik Macro-F1’dir.",
+    ],
+  },
+  {
+    img: "/progress263/2-263.png",
+    title: "Veri analizi: sınıf dağılımı (dengesizlik)",
+    takeaways: [
+      "Tüm veri setinde Macera 116 örneğe sahipken Gerilim yalnızca 9 örnek içeriyor; bu dağılım modelin çoğunluk sınıflarına yönelmesini neredeyse kaçınılmaz hale getirir.",
+      "Bu tür dengesizliklerde accuracy yanıltıcı olabilir: model azınlık sınıfları kaçırsa bile toplam doğruluk çok fazla düşmeyebilir.",
+      "Bu nedenle Macro-F1 metriği tercih edildi; her sınıfı eşit ağırlıkla değerlendirerek az temsil edilen sınıfların göz ardı edilmesini doğrudan yansıtır.",
+    ],
+  },
+  {
+    img: "/progress263/6-263.png",
+    title: "Model karşılaştırması: %74 nereden geldi, neden final metrik olmadı?",
+    takeaways: [
+      "Önceden gördüğümüz %74 (0.7419) değeri: Random Forest’ın ‘accuracy’yi maksimize edecek şekilde ayarlanmış’ konfigürasyonunun hold-out test setindeki doğruluğudur .",
+      "Ancak veri dengesiz olduğu için yalnızca accuracy’ye bakmak, azınlık sınıfların (özellikle Gerilim gibi düşük support’lu sınıflar) başarısızlığını gizleyebilir; bu yüzden Macro-F1 ile desteklemek gerekir.",
+      "Final senaryoda GridSearchCV, eğitim verisinde çapraz doğrulama ile ‘Macro-F1’i maksimize edecek’ parametreleri seçmiştir; bu yaklaşım sınıflar arası daha adil performans raporlaması sağlar.",
+      "Bu yüzden F1-Macro tuned modelde accuracy’nin biraz düşmesi normaldir: optimizasyon hedefi accuracy değil Macro-F1 olduğu için model, bazı çoğunluk sınıf doğrularını feda edip azınlık sınıfları daha dengeli yakalamaya çalışır .",
+    ],
+  },
+  {
+    img: "/progress263/4-263.png",
+    title: "Confusion Matrix (Final RF): hangi sınıflar karışıyor? (Hold-out n=93)",
+    takeaways: [
+      "Confusion matrix’te diyagonal hücreler doğru tahminleri gösterir; diyagonalin yoğunluğu genel öğrenmeyi yansıtır.",
+      "Macera sınıfı diyagonalda en yüksek değere sahiptir ve recall’ı yüksektir: veri sayısı yüksek olduğu için model bu sınıfı daha güçlü öğrenmiştir.",
+      "Eğlenceli sınıfı görece dengeli performans sergiler; model bu sınıfı istikrarlı şekilde ayırt edebilmektedir.",
+      "Duygusal sınıfı en çok Eğlenceli ve Macera ile karışmaktadır; bu, türlerin içerik olarak birbirine yakın olmasından kaynaklanan mantıklı karışmalardır.",
+      "Gerilim sınıfında doğru tahmin sayısı düşüktür; temel sebep model yetersizliği değil, test setinde support’un çok düşük olmasıdır.",
+    ],
+  },
 ];
 
 function ImageCard({ step, badge }: { step: Step; badge: string }) {
@@ -119,7 +105,6 @@ function ImageCard({ step, badge }: { step: Step; badge: string }) {
         ))}
       </ul>
 
-      {/* 🔽 GÖRSEL – KÜÇÜLTÜLMÜŞ VE DÜZENLENMİŞ HALİ */}
       <div className="mt-5 mx-auto max-w-3xl overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
         <div className="relative w-full h-[260px] md:h-[320px]">
           <Image
@@ -145,7 +130,7 @@ export default function ProgressPage() {
           Süreç <span className="text-violet-300">Çıktı Yorumları</span>
         </h1>
         <p className="mt-3 max-w-3xl text-zinc-300">
-          Aşağıda önce 44 veri ile başlangıç , ardından 263 veri ile final senaryo yer alır.
+          Aşağıda önce 44 veri ile başlangıç, ardından 263 veri ile final senaryo yer alır.
           Metinler “çıktıların ne anlama geldiğini” yorumlar.
         </p>
       </section>
@@ -153,14 +138,13 @@ export default function ProgressPage() {
       {/* 44 ÖNCE */}
       <section className="space-y-6">
         <h2 className="text-xl font-semibold text-zinc-300">
-  Ön Çalışma: 44 Veri ile İlk Denemeler
-</h2>
+          Ön Çalışma: 44 Veri ile İlk Denemeler
+        </h2>
 
         <p className="text-zinc-300 max-w-4xl">
-          Bu bölümde, sınırlı sayıda (44) anket verisiyle yapılan ilk model denemeleri
-ve bu denemeler sonucunda ortaya çıkan temel problemler (sınıf karmaşıklığı
-ve dengesizlik) özetlenmektedir.
-
+          Bu bölümde, sınırlı sayıda (44) anket verisiyle yapılan ilk model denemeleri ve
+          bu denemeler sonucunda ortaya çıkan temel problemler (sınıf karmaşıklığı ve dengesizlik)
+          özetlenmektedir.
         </p>
 
         <div className="space-y-6">
@@ -174,12 +158,10 @@ ve dengesizlik) özetlenmektedir.
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold">263 Veri ile Nihai Model Sonuçları</h2>
         <p className="text-zinc-300 max-w-4xl">
-          Bu bölümde, 263 kayıtlı anket verisi kullanılarak elde edilen nihai model
-sonuçları sunulmaktadır. Sınıf dengesizliği problemi, Macro-F1 metriğinin
-tercih edilme gerekçesi, farklı modellerin karşılaştırılması ve final
-confusion matrix ile sınıf bazlı performans çıktıları bu kapsamda
-yorumlanmaktadır.
-
+          Bu bölümde, 263 kayıtlı anket verisi kullanılarak elde edilen nihai model sonuçları
+          sunulmaktadır. Sınıf dengesizliği problemi, Macro-F1 metriğinin tercih edilme gerekçesi,
+          modellerin karşılaştırılması ve final confusion matrix ile sınıf bazlı performans çıktıları
+          bu kapsamda yorumlanmaktadır.
         </p>
 
         <div className="space-y-6">
@@ -187,6 +169,67 @@ yorumlanmaktadır.
             <ImageCard key={idx} step={s} badge="263 Veri — Ana" />
           ))}
         </div>
+
+        {/* ================= ML PIPELINE AÇIKLAMASI ================= */}
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-900/30 p-8 space-y-6">
+          <h3 className="text-2xl font-semibold tracking-tight">
+            Model Nasıl Eğitildi? <span className="text-violet-300">(ML Pipeline)</span>
+          </h3>
+
+          <p className="text-zinc-300 max-w-4xl leading-relaxed">
+            Bu projede makine öğrenmesi süreci, veri sızıntısını (data leakage) önleyecek şekilde
+            adım adım kurgulanmıştır. Aşağıda, modelin nasıl eğitildiği ve hangi yöntemlerin neden
+            tercih edildiği özetlenmektedir.
+          </p>
+
+          <ul className="space-y-4 text-zinc-300 leading-relaxed max-w-4xl">
+            <li>
+              • <b>Veri Temizleme:</b> Zaman damgası ve serbest metin gibi modele katkı sağlamayan sütunlar kaldırıldı.
+              Yaş sayısallaştırıldı; eksikler ortalama/mod ile dolduruldu.
+            </li>
+
+            <li>
+              • <b>Hedef Sınıf Sadeleştirme:</b> Çok sınıflı ve dengesiz türler, 4 ana sınıfa indirgenerek problem daha
+              “öğrenilebilir” hale getirildi (en büyük performans kazanımı bu adımdan geldi).
+            </li>
+
+            <li>
+              • <b>Encoding:</b> Kategorik özellikler One-Hot Encoding ile sayısallaştırıldı.
+            </li>
+
+            <li>
+              • <b>Train/Test Ayrımı:</b> Veri %65 eğitim – %35 test olarak <b>stratified</b> şekilde bölündü.
+              Test seti eğitimde kullanılmadı; final metrikler bu hold-out test üzerinden raporlandı.
+            </li>
+
+            <li>
+              • <b>Baseline:</b> Decision Tree ve Naive Bayes karşılaştırma için baseline olarak çalıştırıldı.
+            </li>
+
+            <li>
+              • <b>RF Tuning (iki hedef):</b>
+              (1) <b>Accuracy-tuned</b> yaklaşımda hold-out testte <b>0.7419</b> doğruluk görüldü (%74).
+              (2) <b>Macro-F1-tuned</b> yaklaşımda amaç, dengesiz sınıflarda daha adil performanstır.
+            </li>
+
+            <li>
+              • <b>Neden F1 ile ayarlanınca accuracy de düşebiliyor?</b> Çünkü GridSearch artık accuracy’yi değil{" "}
+              <b>Macro-F1</b> değerini maksimize eder. Bu da bazı çoğunluk sınıf tahminlerinde küçük bir doğruluk
+              kaybı pahasına, azınlık sınıfları daha dengeli yakalamaya çalışmak demektir (trade-off).
+            </li>
+
+            <li>
+              • <b>Neden %74 “final” değil?</b> Dengesiz sınıflarda yalnız accuracy’ye bakmak azınlık sınıfları “gizleyebilir”.
+              Bu yüzden final raporda Macro-F1 merkezde tutuldu (raporlanabilirlik + adalet).
+            </li>
+          </ul>
+
+          <p className="text-sm text-zinc-400 max-w-4xl">
+            Sonuç: %74 tek başına “yanlış” değil; sadece dengesiz sınıflar nedeniyle “tek başına yeterli değil”.
+            Bu yüzden final değerlendirme Macro-F1 ile desteklenmiştir.
+          </p>
+        </section>
+        {/* ========================================================== */}
       </section>
     </div>
   );

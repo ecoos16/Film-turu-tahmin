@@ -10,50 +10,42 @@ export default function Results() {
           Model <span className="text-violet-300">Sonuçları</span>
         </h1>
         <p className="mt-3 max-w-2xl text-zinc-300">
-          Accuracy tek başına yeterli olmadığı için Macro-F1 ile sınıf dengesizliğini daha adil değerlendirdik.
+          Sınıf dengesizliği nedeniyle accuracy tek başına yanıltıcı olabildiği için,
+          değerlendirmede <span className="text-violet-300">Macro-F1</span> metriği de kullanılmıştır.
+        </p>
+
+        {/* Akademik mini not */}
+        <p className="mt-3 text-sm text-zinc-400">
+          Not: Aşağıdaki değerler <span className="text-zinc-200">hold-out test</span> (n=93) sonuçlarıdır.
+          (Train/Test: %65/%35, stratified split)
         </p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
-        <StatCard title="En İyi Accuracy" value="0.677" note="Random Forest (tuned)" />
-        <StatCard title="En İyi Macro-F1" value="0.576" note="RF (F1-Macro Tuned)" />
+        {/* "En iyi" yerine "Final (Hold-out Test)" çok daha doğru */}
+        <StatCard
+          title="Final Accuracy (Hold-out Test)"
+          value="0.688"
+          note="Random Forest (F1-Macro Tuned)"
+        />
+        <StatCard
+          title="Final Macro-F1 (Hold-out Test)"
+          value="0.596"
+          note="Random Forest (F1-Macro Tuned)"
+        />
         <StatCard title="Veri" value="263" note="Temizlenmiş anket kayıtları" />
       </section>
 
       <section className="rounded-3xl border border-zinc-800 bg-zinc-900/30 p-6">
         <h2 className="text-lg font-semibold">Model Karşılaştırması</h2>
         <p className="mt-2 text-sm text-zinc-400">
-          Aynı veri bölünmesi üzerinde farklı modellerin performans karşılaştırması.
+          Aynı train/test bölünmesi üzerinde farklı modellerin performans karşılaştırması.
         </p>
         <div className="mt-4">
           <ModelTable />
         </div>
       </section>
 
-      <section className="rounded-3xl border border-zinc-800 bg-zinc-900/30 p-6">
-        <h2 className="text-lg font-semibold">Confusion Matrix</h2>
-        <p className="mt-2 text-sm text-zinc-400">
-          Modelin sınıfları ne kadar doğru ayırdığını gösterir.
-        </p>
-
-        <div className="mt-4 mx-auto max-w-3xl overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950">
-  <Image
-    src="/cm.png"
-    alt="Confusion Matrix"
-    width={900}
-    height={600}
-    className="h-auto w-full"
-  />
-  <p className="mt-4 text-sm text-zinc-300 leading-relaxed">
-  Confusion matrix incelendiğinde, <span className="text-violet-300">Macera </span> sınıfının
-  yüksek doğrulukla tahmin edildiği görülmektedir. 
-  <span className="text-violet-300"> Gerilim </span> sınıfında ise veri sayısının az olması
-  nedeniyle sınıflar arası karışma gözlemlenmiştir. 
-  Bu durum, Macro-F1 metriğinin tercih edilmesinin nedenini desteklemektedir.
-</p>
-
-        </div>
-      </section>
     </div>
   );
 }
